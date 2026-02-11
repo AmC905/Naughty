@@ -20,16 +20,18 @@
     opacity: 0;
     transition: opacity 1s ease-in;
   }
-  #reveal {
-    padding: 10px 20px;
+  input, button {
+    padding: 10px;
     font-size: 1em;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  button {
     cursor: pointer;
     background: #f2e6d9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 30px;
   }
-  #reveal:hover {
+  button:hover {
     background: #e8d9c3;
   }
 </style>
@@ -37,10 +39,17 @@
 <body>
 
 <h1>夜裡的心意</h1>
-<button id="reveal">打開情書</button>
+<p>請輸入密碼打開情書：</p>
+<input type="password" id="pw" placeholder="密碼">
+<button id="unlock">打開情書</button>
+
 <pre id="letter"></pre>
 
 <script>
+// 設定密碼
+const PASSWORD = "moonlight"; // <-- 你可以改成你想要的密碼
+
+// JSON 情書
 const loveLetter = {
   "subject": "關於光，以及妳",
   "opening": "夜很安靜，我把燈調暗，讓思念有一點呼吸的空間。",
@@ -63,20 +72,26 @@ const loveLetter = {
   "closing": "如果妳願意，我想用餘生，替妳保留一盞燈。"
 };
 
-document.getElementById("reveal").onclick = () => {
-  const letterEl = document.getElementById("letter");
-  letterEl.textContent = 
-    `主題：${loveLetter.subject}\n\n` +
-    `${loveLetter.opening}\n\n` +
-    loveLetter.fragments.join("\n") + "\n\n" +
-    loveLetter.daily_observations.join("\n") + "\n\n" +
-    `告白：${loveLetter.confession}\n\n` +
-    loveLetter.wish.join("\n") + "\n\n" +
-    loveLetter.closing;
-
-  letterEl.style.opacity = 1;
-  document.getElementById("reveal").disabled = true;
-  document.getElementById("reveal").style.cursor = "default";
+// 點擊事件
+document.getElementById("unlock").onclick = () => {
+  const pwInput = document.getElementById("pw").value;
+  if(pwInput === PASSWORD){
+    const letterEl = document.getElementById("letter");
+    letterEl.textContent = 
+      `主題：${loveLetter.subject}\n\n` +
+      `${loveLetter.opening}\n\n` +
+      loveLetter.fragments.join("\n") + "\n\n" +
+      loveLetter.daily_observations.join("\n") + "\n\n" +
+      `告白：${loveLetter.confession}\n\n` +
+      loveLetter.wish.join("\n") + "\n\n" +
+      loveLetter.closing;
+    letterEl.style.opacity = 1;
+    document.getElementById("unlock").disabled = true;
+    document.getElementById("pw").style.display = "none";
+    document.getElementById("unlock").style.display = "none";
+  } else {
+    alert("密碼錯誤，再試一次 💌");
+  }
 };
 </script>
 
