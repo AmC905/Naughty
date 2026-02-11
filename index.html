@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>只為妳的光</title>
+<style>
+  body {
+    background: #fefcf8;
+    color: #333;
+    font-family: "Courier New", monospace;
+    padding: 60px;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  #letter {
+    white-space: pre-wrap;
+    opacity: 0;
+    transition: opacity 1s ease-in;
+  }
+  #reveal {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background: #f2e6d9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  #reveal:hover {
+    background: #e8d9c3;
+  }
+</style>
+</head>
+<body>
+
+<h1>夜裡的心意</h1>
+<button id="reveal">打開情書</button>
+<pre id="letter"></pre>
+
+<script>
+const loveLetter = {
+  "subject": "關於光，以及妳",
+  "opening": "夜很安靜，我把燈調暗，讓思念有一點呼吸的空間。",
+  "fragments": [
+    "有些人出現，是為了教會我們離開。",
+    "但妳不是。",
+    "妳比較像光，慢慢落下來，沒有聲音。"
+  ],
+  "daily_observations": [
+    "妳低頭笑的弧度，像黃昏剛好好的天空。",
+    "妳專注時的側臉，讓時間願意停一下。",
+    "妳說『沒事啦』的語氣，其實很溫柔。"
+  ],
+  "confession": "我發現，我喜歡妳，已經不是一時的心動，而是每天都在增加的在乎。",
+  "wish": [
+    "希望往後的咖啡，有妳。",
+    "希望平凡的日子，也能並肩。",
+    "如果可以，讓時間慢慢把我們寫進同一段故事。"
+  ],
+  "closing": "如果妳願意，我想用餘生，替妳保留一盞燈。"
+};
+
+document.getElementById("reveal").onclick = () => {
+  const letterEl = document.getElementById("letter");
+  letterEl.textContent = 
+    `主題：${loveLetter.subject}\n\n` +
+    `${loveLetter.opening}\n\n` +
+    loveLetter.fragments.join("\n") + "\n\n" +
+    loveLetter.daily_observations.join("\n") + "\n\n" +
+    `告白：${loveLetter.confession}\n\n` +
+    loveLetter.wish.join("\n") + "\n\n" +
+    loveLetter.closing;
+
+  letterEl.style.opacity = 1;
+  document.getElementById("reveal").disabled = true;
+  document.getElementById("reveal").style.cursor = "default";
+};
+</script>
+
+</body>
+</html>
