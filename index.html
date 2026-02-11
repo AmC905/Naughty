@@ -8,7 +8,7 @@
   body {
     background: #0e1a2b;
     color: #fff;
-    font-family: 'Hanalei Fill / Hanalei', "ZCOOL QingKe HuangYou", "微軟正黑體", serif;
+    font-family: 'Hanalei Fill', 'Hanalei', "ZCOOL QingKe HuangYou", "微軟正黑體", serif;
     padding: 40px;
     line-height: 1.8;
     text-align: center;
@@ -102,3 +102,47 @@ function createStars(num) {
     const star = document.createElement("div");
     star.classList.add("star");
     const size = Math.random() * 4 + 2*
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.left = Math.random()*100 + "vw";
+    star.style.top = Math.random()*100 + "vh";
+    star.style.animationDuration = (Math.random()*20 + 10) + "s";
+    document.body.appendChild(star);
+  }
+}
+createStars(50);
+
+document.getElementById("unlock").onclick = () => {
+  const pwInput = document.getElementById("pw").value;
+  if(pwInput === PASSWORD){
+    document.getElementById("unlock").disabled = true;
+    document.getElementById("pw").style.display = "none";
+    document.getElementById("unlock").style.display = "none";
+
+    const letterEl = document.getElementById("letter");
+    letterEl.textContent = "";
+    letterEl.style.opacity = 1;
+
+    // 逐行淡入效果
+    let index = 0;
+    function showLine() {
+      if(index < loveLetter.length){
+        const line = document.createElement("div");
+        line.textContent = loveLetter[index];
+        line.style.opacity = 0;
+        line.style.transition = "opacity 1s ease-in";
+        letterEl.appendChild(line);
+        setTimeout(()=>{line.style.opacity = 1;},50);
+        index++;
+        setTimeout(showLine, 800);
+      }
+    }
+    showLine();
+  } else {
+    alert("密碼錯誤，再試一次 💌");
+  }
+};
+</script>
+
+</body>
+</html>
