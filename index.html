@@ -2,29 +2,39 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>網頁名多愁善感的你</title>
+<title>多愁善感的你</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
 <style>
   body {
     background: #cef5ec;
     color: #333;
-    font-family: 'Hanalei Fill', "PingFang TC", "ZCOOL QingKe HuangYou", serif;
+    font-family: 'Noto Serif TC', "PingFang TC", "微軟正黑體", serif;
     padding: 40px;
-    line-height: 1.6;
+    line-height: 1.8;
+    text-align: center;
   }
   h1 {
     font-size: 2em;
     margin-bottom: 20px;
+    font-weight: normal;
   }
   #letter {
     white-space: pre-wrap;
-    opacity: 0;
-    transition: opacity 1s ease-in;
+    opacity: 1;
+    margin-top: 30px;
+    text-align: center;
+  }
+  #input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
   }
   input, button {
-    padding: 10px;
+    padding: 10px 15px;
     font-size: 1em;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
   }
@@ -37,65 +47,63 @@
   }
 </style>
 </head>
-</body>
+<body>
 
-<h1>測試</h1>
-<p>請輸入密碼打開(靈魂數字)：</p>
-<input type="password" id="pw" placeholder="密碼">
-<button id="unlock">打開信封</button>
+<h1>夜裡的心意</h1>
+<p>請輸入密碼打開信封：</p>
+
+<div id="input-area">
+  <input type="password" id="pw" placeholder="密碼">
+  <button id="unlock">打開信封</button>
+</div>
 
 <pre id="letter"></pre>
 
 <script>
-// 這裡是什麼
-const PASSWORD = "1031"; // 這裡是什麼
+const PASSWORD = "1031";
 
-// JSON 出現什麼
-const loveLetter = {
-  "subject": "這chatgpt寫的故事偏噁心",
-  "opening": "夜很安靜，呼吸 不然會往生。",
-  "fragments": [
-    "有些人出現，是為了教會我們離開，不然要留下來嗎。",
-    "但妳不是 那誰是。",
-    "妳比較像光，慢慢落下來，沒有聲音 這個叫觀落暈。",
-    "怎麼有人寫得出這種東西"
-  ],
-  "daily_observations": [
-    "下雨天就趕快回家。",
-    "出太陽就趕快去吹冷氣。",
-    "好了好了太多了。"
-  ],
-  "confession": "在乎。",
-  "wish": [
-    "希望往後的咖啡，有糖但我不喝咖啡。",
-    "希望平凡的日子，盡情發瘋。",
-    "如果可以，一起在雨中淋雨比較瘋狂。"
-  ],
-  "closing": "這個結尾太肉麻了 刪掉。"
-};
+const loveLetter = [
+  "這chatgpt寫的故事偏噁心",
+  "夜很安靜，呼吸 不然會往生。",
+  "有些人出現，是為了教會我們離開，不然要留下來嗎。",
+  "但妳不是 那誰是。",
+  "妳比較像光，慢慢落下來，沒有聲音 這個叫觀落暈。",
+  "怎麼有人寫得出這種東西",
+  "下雨天就趕快回家。",
+  "出太陽就趕快去吹冷氣。",
+  "好了好了太多了。",
+  "在乎。",
+  "希望往後的咖啡，有糖但我不喝咖啡。",
+  "希望平凡的日子，盡情發瘋。",
+  "如果可以，一起在雨中淋雨比較瘋狂。",
+  "這個結尾太肉麻了 刪掉。"
+];
 
-// 點擊事件
 document.getElementById("unlock").onclick = () => {
   const pwInput = document.getElementById("pw").value;
   if(pwInput === PASSWORD){
-    const letterEl = document.getElementById("letter");
-    letterEl.textContent = 
-      `${loveLetter.subject}\n\n` +
-      `${loveLetter.opening}\n\n` +
-      loveLetter.fragments.join("\n") + "\n\n" +
-      loveLetter.daily_observations.join("\n") + "\n\n" +
-      `${loveLetter.confession}\n\n` +
-      loveLetter.wish.join("\n") + "\n\n" +
-      loveLetter.closing;
-    letterEl.style.opacity = 1;
     document.getElementById("unlock").disabled = true;
     document.getElementById("pw").style.display = "none";
     document.getElementById("unlock").style.display = "none";
+
+    const letterEl = document.getElementById("letter");
+    letterEl.textContent = "";
+
+    // 逐行慢慢顯示
+    let index = 0;
+    function showLine() {
+      if(index < loveLetter.length){
+        letterEl.textContent += loveLetter[index] + "\n\n";
+        index++;
+        setTimeout(showLine, 800); // 每行出現間隔 800ms，可改快慢
+      }
+    }
+    showLine();
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
 };
 </script>
 
-</body> 
+</body>
 </html>
