@@ -79,11 +79,11 @@ document.getElementById("unlock").onclick = () => {
   if(pwInput === PASSWORD){
     const letterEl = document.getElementById("letter");
     letterEl.textContent = 
-      `主題：${loveLetter.subject}\n\n` +
+      `${loveLetter.subject}\n\n` +
       `${loveLetter.opening}\n\n` +
       loveLetter.fragments.join("\n") + "\n\n" +
       loveLetter.daily_observations.join("\n") + "\n\n" +
-      `告白：${loveLetter.confession}\n\n` +
+      `${loveLetter.confession}\n\n` +
       loveLetter.wish.join("\n") + "\n\n" +
       loveLetter.closing;
     letterEl.style.opacity = 1;
