@@ -36,26 +36,35 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+/* 標題 */
 h1 {
-  font-size: 2.5em;
+  font-size: 3em; /* 標題大一些 */
   font-weight: 300;
   letter-spacing: 4px;
   margin-bottom: 20px;
 }
 
+/* 指示文字 */
+#instruction {
+  font-size: 1.5em; /* 提升大小 */
+  margin-bottom: 30px;
+}
+
+/* 信件文字 */
 #letter {
   margin-top: 40px;
-  font-size: 1.3em;
+  font-size: 1.4em; /* 調大一點 */
   max-width: 700px;
   text-align: center;
 }
 
 #letter a {
-  pointer-events: auto;      /* 確保超連結可以點 */
+  pointer-events: auto; 
   color: #f2e6d9;
   text-decoration: underline;
 }
 
+/* 輸入區 */
 #input-area {
   margin-bottom: 40px;
   z-index: 2;
@@ -127,7 +136,11 @@ button:hover {
   }
 
   h1 {
-    font-size: 2em;
+    font-size: 2.2em;
+  }
+
+  #instruction {
+    font-size: 1.3em;
   }
 
   #letter {
@@ -140,7 +153,7 @@ button:hover {
 <body>
 
 <h1>夜裡多愁善感</h1>
-<p>請輸入4位密碼打開信封：</p>
+<p id="instruction">請輸入4位密碼打開信封：</p>
 
 <div id="input-area">
   <input type="password" id="pw" placeholder="密碼">
@@ -199,7 +212,6 @@ document.getElementById("unlock").onclick = () => {
   const input = document.getElementById("pw").value;
 
   if(input === PASSWORD){
-
     document.getElementById("input-area").style.display = "none";
 
     shootMeteor(); // 解鎖後出現流星
@@ -210,8 +222,8 @@ document.getElementById("unlock").onclick = () => {
     let i = 0;
     function showLine(){
       if(i < loveLetter.length){
-        const line = document.createElement("p"); // ✅ 改成 p
-        line.innerHTML = loveLetter[i];          // ✅ 使用 innerHTML
+        const line = document.createElement("p"); // 使用 <p>
+        line.innerHTML = loveLetter[i];
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
