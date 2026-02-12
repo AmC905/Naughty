@@ -23,7 +23,8 @@ body {
   align-items: center;
   min-height: 100vh;
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
 
   background: linear-gradient(-45deg, #0e1a2b, #132743, #1c2e4a, #0e1a2b);
@@ -37,7 +38,6 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* 標題 */
 h1 {
   font-size: 3em;
   font-weight: 300;
@@ -45,13 +45,11 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* 指示文字 */
 #instruction {
   font-size: 1.5em;
   margin-bottom: 30px;
 }
 
-/* 信件文字 */
 #letter {
   margin-top: 40px;
   font-size: 1.4em;
@@ -60,12 +58,11 @@ h1 {
 }
 
 #letter a {
-  pointer-events: auto; 
+  pointer-events: auto;
   color: #f2e6d9;
   text-decoration: underline;
 }
 
-/* 輸入區 */
 #input-area {
   margin-bottom: 40px;
   z-index: 2;
@@ -129,27 +126,7 @@ button:hover {
   100% { opacity: 0; transform: translate(300px,300px) rotate(45deg); }
 }
 
-/* 選項按鈕區 */
-#choice-area {
-  margin-top: 30px;
-}
-
-.choice-button {
-  padding: 12px 20px;
-  font-size: 1.2em;
-  margin: 10px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  background: #f2e6d9;
-  color: #333;
-}
-
-.choice-button:hover {
-  background: #e8d9c3;
-}
-
-/* 底部示範圖片 */
+/* 底部圖片 */
 #bottom-image {
   position: fixed;
   bottom: 10px;
@@ -169,31 +146,15 @@ button:hover {
   text-align: center;
   z-index: 2;
   pointer-events: none;
-  display: none; /* 一開始隱藏 */
+  display: none;
 }
 
-/* 手機版微調 */
 @media (max-width: 768px) {
-  body {
-    padding-top: 18vh;
-    font-size: 18px;
-  }
-
-  h1 {
-    font-size: 2.2em;
-  }
-
-  #instruction {
-    font-size: 1.3em;
-  }
-
-  #letter {
-    font-size: 1.2em;
-  }
-
-  #bottom-image {
-    max-width: 150px;
-  }
+  body { padding-top: 18vh; font-size: 18px; }
+  h1 { font-size: 2.2em; }
+  #instruction { font-size: 1.3em; }
+  #letter { font-size: 1.2em; }
+  #bottom-image { max-width: 150px; }
 }
 </style>
 </head>
@@ -209,15 +170,14 @@ button:hover {
 </div>
 
 <div id="letter"></div>
-<div id="choice-area"></div>
 
-<!-- 手機提示文字 -->
 <p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 
-<!-- 底部示範圖片 -->
-<img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png" alt="底部裝飾">
+<img id="bottom-image"
+src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png">
 
 <script>
+
 const PASSWORD = "1031";
 
 const loveLetter = [
@@ -241,7 +201,7 @@ const loveLetter = [
   "你好像都沒聽見我的低語呢喃",
   "好吧",
   "在那一天到來之前",
-  " <a href='https://open.spotify.com/playlist/5sTSL29EOv11UCg3s8goXg?si=OKr89teeRI-2ObO1radIxw' target='_blank'>只好先聽這個我為你打造的專屬歌單了</a>。"
+  "<a href='https://open.spotify.com/playlist/5sTSL29EOv11UCg3s8goXg?si=OKr89teeRI-2ObO1radIxw' target='_blank'>只好先聽這個我為你打造的專屬歌單了</a>。"
 ];
 
 // ⭐ 星星
@@ -271,7 +231,9 @@ function shootMeteor(){
 }
 
 // 🔓 解鎖
-document.getElementById("unlock").onclick = () => {
+document.getElementById("unlock").onclick = unlockPage;
+
+function unlockPage(){
   const input = document.getElementById("pw").value;
 
   if(input === PASSWORD){
@@ -286,12 +248,18 @@ document.getElementById("unlock").onclick = () => {
 
     function showLine(){
       if(i < loveLetter.length){
+
         const line = document.createElement("p");
         line.innerHTML = loveLetter[i];
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
 
         letterEl.appendChild(line);
+
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth"
+        });
 
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
 
@@ -300,9 +268,12 @@ document.getElementById("unlock").onclick = () => {
 
       } else {
 
-        // ⭐ 全部顯示完後才顯示手機提示
-        const mobileTip = document.getElementById("mobile-tip");
-        mobileTip.style.display = "block";
+        document.getElementById("mobile-tip").style.display = "block";
+
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth"
+        });
       }
     }
 
@@ -311,7 +282,14 @@ document.getElementById("unlock").onclick = () => {
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
-};
+}
+
+// ⌨️ Enter 解鎖
+document.getElementById("pw").addEventListener("keypress", function(e){
+  if(e.key === "Enter"){
+    unlockPage();
+  }
+});
 
 </script>
 
