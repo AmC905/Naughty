@@ -12,6 +12,7 @@ body {
   margin: 0;
   padding: 40px;
   padding-top: 12vh;
+  padding-bottom: 220px; /* ⭐ 預留底部空間給固定圖片 */
   color: #ffffff;
   font-family: 'Sacramento', 'Satisfy', cursive;
   line-height: 2;
@@ -146,7 +147,7 @@ button:hover {
   text-align: center;
   z-index: 2;
   pointer-events: none;
-  display: none;
+  display: none; /* ⭐ 初始隱藏 */
 }
 
 @media (max-width: 768px) {
@@ -173,13 +174,13 @@ button:hover {
 
 <p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 
-<img id="bottom-image"
-src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png">
+<img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png">
 
 <script>
-
+// 密碼
 const PASSWORD = "1031";
 
+// 文字內容
 const loveLetter = [
   "密碼很簡單吧!",
   "就像這件事情也很單純",
@@ -200,7 +201,7 @@ const loveLetter = [
   "<a href='https://open.spotify.com/playlist/5sTSL29EOv11UCg3s8goXg?si=OKr89teeRI-2ObO1radIxw' target='_blank'>只好先聽這個歌單了</a>。"
 ];
 
-// ⭐ 星星
+// ⭐ 星星生成
 function createStars(num){
   for(let i=0;i<num;i++){
     const star = document.createElement("div");
@@ -226,67 +227,59 @@ function shootMeteor(){
   setTimeout(()=>{ meteor.remove(); }, 1000);
 }
 
-// 🔓 解鎖
-document.getElementById("unlock").onclick = unlockPage;
-
+// 🔓 解鎖函式
 function unlockPage(){
   const input = document.getElementById("pw").value;
 
   if(input === PASSWORD){
-
     document.getElementById("input-area").style.display = "none";
     shootMeteor();
 
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
-
     let i = 0;
 
     function showLine(){
       if(i < loveLetter.length){
-
         const line = document.createElement("p");
         line.innerHTML = loveLetter[i];
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
-
         letterEl.appendChild(line);
 
+        // ⭐ 文字出現時自動滾動，保留底部空間
         window.scrollTo({
-          top: document.body.scrollHeight,
+          top: document.body.scrollHeight - 220,
           behavior: "smooth"
         });
 
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
-
         i++;
         setTimeout(showLine, 1200);
-
       } else {
-
+        // 顯示手機提示文字
         document.getElementById("mobile-tip").style.display = "block";
-
         window.scrollTo({
-          top: document.body.scrollHeight,
+          top: document.body.scrollHeight - 220,
           behavior: "smooth"
         });
       }
     }
-
     showLine();
-
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
 }
 
-// ⌨️ Enter 解鎖
+// 按鈕點擊解鎖
+document.getElementById("unlock").onclick = unlockPage;
+
+// Enter 鍵解鎖
 document.getElementById("pw").addEventListener("keypress", function(e){
   if(e.key === "Enter"){
     unlockPage();
   }
 });
-
 </script>
 
 </body>
