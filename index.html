@@ -12,14 +12,13 @@ body {
   padding: 40px;
   padding-top: 12vh;
   color: #ffffff;
-  font-family: 'Noto Serif TC', 'Hanalei', 'Noto Serif TC', serif;
+  font-family: 'Noto Serif TC', 'Hanalei', serif;
   line-height: 2;
   font-size: 20px;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 12vh;
   align-items: center;
   min-height: 100vh;
 
@@ -49,6 +48,12 @@ h1 {
   font-size: 1.3em;
   max-width: 700px;
   text-align: center;
+}
+
+#letter a {
+  pointer-events: auto;      /* 確保超連結可以點 */
+  color: #f2e6d9;
+  text-decoration: underline;
 }
 
 #input-area {
@@ -113,6 +118,22 @@ button:hover {
   0% { opacity: 1; transform: translate(0,0) rotate(45deg); }
   100% { opacity: 0; transform: translate(300px,300px) rotate(45deg); }
 }
+
+/* 手機版微調 */
+@media (max-width: 768px) {
+  body {
+    padding-top: 18vh;
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  #letter {
+    font-size: 1.2em;
+  }
+}
 </style>
 </head>
 
@@ -141,7 +162,7 @@ const loveLetter = [
   "",
   "希望平凡的日子，盡情發瘋。",
   "如果可以，一起在雨中淋雨。",
-  '測試一下 <a href="https://open.spotify.com/playlist/5sTSL29EOv11UCg3s8goXg?si=OKr89teeRI-2ObO1radIxw" target="_blank" style="color:#f2e6d9; text-decoration:underline;">要聽聽看我最近的歌單嗎</a>。'
+  "測試一下 <a href='https://open.spotify.com/playlist/5sTSL29EOv11UCg3s8goXg?si=OKr89teeRI-2ObO1radIxw' target='_blank'>要聽聽看我最近的歌單嗎</a>。"
 ];
 
 // ⭐ 星星
@@ -189,8 +210,8 @@ document.getElementById("unlock").onclick = () => {
     let i = 0;
     function showLine(){
       if(i < loveLetter.length){
-        const line = document.createElement("div");
-        line.innerHTML = loveLetter[i];
+        const line = document.createElement("p"); // ✅ 改成 p
+        line.innerHTML = loveLetter[i];          // ✅ 使用 innerHTML
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
