@@ -273,36 +273,46 @@ function shootMeteor(){
 // 🔓 解鎖
 document.getElementById("unlock").onclick = () => {
   const input = document.getElementById("pw").value;
+
   if(input === PASSWORD){
+
     document.getElementById("input-area").style.display = "none";
     shootMeteor();
 
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
+
     let i = 0;
+
     function showLine(){
       if(i < loveLetter.length){
         const line = document.createElement("p");
         line.innerHTML = loveLetter[i];
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
+
         letterEl.appendChild(line);
+
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
+
         i++;
         setTimeout(showLine, 1200);
+
       } else {
-        showChoices();
+
+        // ⭐ 全部顯示完後才顯示手機提示
+        const mobileTip = document.getElementById("mobile-tip");
+        mobileTip.style.display = "block";
       }
     }
+
     showLine();
+
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
 };
-  
-  // 顯示手機提示文字
-  document.getElementById("mobile-tip").style.display = "block";
-}
+
 </script>
 
 </body>
