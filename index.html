@@ -3,73 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <title>JANE DOE</title>
-<link href="https://fonts.googleapis.com/css2?family=Hanalei&family=Noto+Serif+TC&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
-  body {
-    background: #0e1a2b;
-    color: #fff;
-    font-family: 'Hanalei', 'Noto Serif TC', "ZCOOL QingKe HuangYou", "微軟正黑體", serif;
-    padding: 40px;
-    line-height: 1.8;
-    text-align: center;
-    overflow: hidden;
-    position: relative;
-  }
-  h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    font-weight: normal;
-  }
-  #letter {
-    white-space: pre-wrap;
-    margin-top: 30px;
-    text-align: center;
-  }
-  #input-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-    z-index: 2;
-    position: relative;
-  }
-  input, button {
-    padding: 10px 15px;
-    font-size: 1em;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  button {
-    cursor: pointer;
-    background: #f2e6d9;
-    color: #333;
-  }
-  button:hover {
-    background: #e8d9c3;
-  }
-  /* 漂浮光點 */
-  .star {
-    position: absolute;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: floatStar linear infinite;
-  }
-  @keyframes floatStar {
-    0% {transform: translateY(0) translateX(0);}
-    100% {transform: translateY(-120vh) translateX(20px);}
-  }
+body {
+  margin: 0;
+  padding: 40px;
+  color: #ffffff;
+  font-family: 'Noto Serif TC', serif;
+  line-height: 2;
+  font-size: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  overflow: hidden;
+  position: relative;
+
+  background: linear-gradient(-45deg, #0e1a2b, #132743, #1c2e4a, #0e1a2b);
+  background-size: 400% 400%;
+  animation: gradientMove 18s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+h1 {
+  font-size: 2.5em;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+}
+
+#letter {
+  margin-top: 40px;
+  font-size: 1.3em;
+  max-width: 700px;
+  text-align: center;
+}
+
+#input-area {
+  margin-bottom: 30px;
+  z-index: 2;
+}
+
+input, button {
+  padding: 12px 18px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: none;
+  margin: 8px;
+}
+
+input {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  outline: none;
+}
+
+button {
+  background: #f2e6d9;
+  color: #333;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e8d9c3;
+}
+
+/* 星星 */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  animation: floatStar linear infinite, twinkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes floatStar {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-120vh); }
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
+/* 流星 */
+.meteor {
+  position: absolute;
+  width: 2px;
+  height: 120px;
+  background: linear-gradient(white, rgba(255,255,255,0));
+  transform: rotate(45deg);
+  animation: shoot 1s ease-out forwards;
+}
+
+@keyframes shoot {
+  0% { opacity: 1; transform: translate(0,0) rotate(45deg); }
+  100% { opacity: 0; transform: translate(300px,300px) rotate(45deg); }
+}
 </style>
 </head>
+
 <body>
 
 <h1>夜裡多愁善感</h1>
-<p>請輸入靈魂密碼打開信封：</p>
+<p>請輸入4位密碼打開信封：</p>
 
 <div id="input-area">
-  <input type="password" id="pw" placeholder="You Know That">
+  <input type="password" id="pw" placeholder="密碼">
   <button id="unlock">打開信封</button>
 </div>
 
@@ -78,66 +129,78 @@
 <script>
 const PASSWORD = "1031";
 
-// 情書文字陣列
 const loveLetter = [
-  "這chatgpt寫的故事偏噁心",
-  "夜很安靜，呼吸 不然會往生。",
-  "有些人出現，是為了教會我們離開，不然要留下來嗎。",
-  "但妳不是 那誰是。",
-  "妳比較像光，慢慢落下來，沒有聲音 這個叫觀落暈。",
-  "怎麼有人寫得出這種東西",
-  "下雨天就趕快回家。",
-  "出太陽就趕快去吹冷氣。",
-  "好了好了太多了。",
+  "夜很安靜。",
+  "有些人出現，測試一下。",
+  "但妳不是。",
+  "妳比較像光，慢慢落下來，沒有聲音。",
+  "",
   "在乎。",
-  "希望往後的咖啡，有糖但我不喝咖啡。",
-  "希望平凡的日子，盡情發瘋。",
-  "如果可以，一起在雨中淋雨比較瘋狂。",
-  "這個結尾太肉麻了 刪掉。"
+  "",
+  "平凡的日子，盡情發瘋。",
+  "一起在雨中淋雨。"
 ];
 
-// 生成漂浮光點
-function createStars(num) {
+// ⭐ 星星
+function createStars(num){
   for(let i=0;i<num;i++){
     const star = document.createElement("div");
     star.classList.add("star");
-    const size = Math.random() * 4 + 2; // 2~6px
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.left = Math.random()*100 + "vw";
-    star.style.top = Math.random()*100 + "vh";
-    star.style.animationDuration = (Math.random()*20 + 10) + "s";
+
+    const size = Math.random()*3 + 1;
+    star.style.width = size+"px";
+    star.style.height = size+"px";
+    star.style.left = Math.random()*100+"vw";
+    star.style.top = Math.random()*100+"vh";
+    star.style.animationDuration = (Math.random()*40+20)+"s";
+
     document.body.appendChild(star);
   }
 }
-createStars(50);
+createStars(80);
 
-// 密碼解鎖事件
+// 🌠 流星（只跑一次）
+function shootMeteor(){
+  const meteor = document.createElement("div");
+  meteor.classList.add("meteor");
+  meteor.style.top = "10%";
+  meteor.style.left = "70%";
+  document.body.appendChild(meteor);
+
+  setTimeout(()=>{ meteor.remove(); }, 1000);
+}
+
+// 🔓 解鎖
 document.getElementById("unlock").onclick = () => {
-  const pwInput = document.getElementById("pw").value;
-  if(pwInput === PASSWORD){
-    document.getElementById("unlock").disabled = true;
-    document.getElementById("pw").style.display = "none";
-    document.getElementById("unlock").style.display = "none";
+  const input = document.getElementById("pw").value;
+
+  if(input === PASSWORD){
+
+    document.getElementById("input-area").style.display = "none";
+
+    shootMeteor(); // 解鎖後出現流星
 
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
 
-    // 逐行淡入文字
-    let index = 0;
-    function showLine() {
-      if(index < loveLetter.length){
+    let i = 0;
+    function showLine(){
+      if(i < loveLetter.length){
         const line = document.createElement("div");
-        line.textContent = loveLetter[index];
+        line.textContent = loveLetter[i];
         line.style.opacity = 0;
-        line.style.transition = "opacity 1s ease-in";
+        line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
-        setTimeout(()=>{line.style.opacity = 1;},50);
-        index++;
-        setTimeout(showLine, 800); // 每行 0.8 秒
+
+        setTimeout(()=>{ line.style.opacity = 1; }, 50);
+
+        i++;
+        setTimeout(showLine, 1500);
       }
     }
+
     showLine();
+
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
