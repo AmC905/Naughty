@@ -210,7 +210,7 @@ button:hover {
 
 <div id="letter"></div>
 <div id="choice-area"></div>
-
+  
 <!-- 手機提示文字 -->
 <p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 
@@ -278,7 +278,7 @@ document.getElementById("unlock").onclick = () => {
         letterEl.appendChild(line);
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
-        setTimeout(showLine, 1500);
+        setTimeout(showLine, 1000);
       } else {
         showChoices();
       }
@@ -306,16 +306,6 @@ function showChoices(){
 
   choiceArea.appendChild(option1);
   choiceArea.appendChild(option2);
-
-
-
-
-
-
-
-
-
-  
 
   
   // 顯示手機提示文字
