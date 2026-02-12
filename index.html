@@ -11,7 +11,7 @@ body {
   margin: 0;
   padding: 40px;
   padding-top: 12vh;
-  padding-bottom: 220px; /* ⭐ 預留底部空間給固定圖片 */
+  padding-bottom: 220px; /* 保留底部空間給固定圖片 */
   color: #ffffff;
   font-family: 'Sacramento', 'Helvetica Neue', sans-serif;
   line-height: 2;
@@ -146,7 +146,7 @@ button:hover {
   text-align: center;
   z-index: 2;
   pointer-events: none;
-  display: none; /* ⭐ 初始隱藏 */
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -234,8 +234,11 @@ function unlockPage(){
 
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
-    let i = 0;
 
+    // ⭐ 一開始就滾動到 letter 的最上方
+    letterEl.scrollIntoView({behavior: "smooth", block: "start"});
+
+    let i = 0;
     function showLine(){
       if(i < loveLetter.length){
         const line = document.createElement("p");
@@ -244,7 +247,7 @@ function unlockPage(){
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
 
-        // ⭐ 文字出現時自動滾動，保留底部空間
+        // 文字出現時自動滾動到最後一行（保留底部空間）
         window.scrollTo({
           top: document.body.scrollHeight - 220,
           behavior: "smooth"
