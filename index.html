@@ -161,6 +161,17 @@ button:hover {
   pointer-events: none;
 }
 
+/* 手機提示文字 */
+#mobile-tip {
+  margin-top: 15px;
+  font-size: 1em;
+  color: #f2e6d9;
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+  display: none; /* 一開始隱藏 */
+}
+
 /* 手機版微調 */
 @media (max-width: 768px) {
   body {
@@ -199,6 +210,9 @@ button:hover {
 
 <div id="letter"></div>
 <div id="choice-area"></div>
+
+<!-- 手機提示文字 -->
+<p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 
 <!-- 底部示範圖片 -->
 <img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png" alt="底部裝飾">
@@ -292,12 +306,10 @@ function showChoices(){
 
   choiceArea.appendChild(option1);
   choiceArea.appendChild(option2);
-};
 
-const loveLetter = {
-  "手機版往上滑會更清楚的看到你的Power寶貝"
+  // 顯示手機提示文字
+  document.getElementById("mobile-tip").style.display = "block";
 }
-  
 </script>
 
 </body>
