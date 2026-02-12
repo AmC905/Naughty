@@ -148,6 +148,18 @@ button:hover {
   background: #e8d9c3;
 }
 
+/* 底部示範圖片 */
+#bottom-image {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 200px;
+  opacity: 0.8;
+  z-index: 1;
+  pointer-events: none;
+}
+
 /* 手機版微調 */
 @media (max-width: 768px) {
   body {
@@ -166,6 +178,10 @@ button:hover {
   #letter {
     font-size: 1.2em;
   }
+
+  #bottom-image {
+    max-width: 150px;
+  }
 }
 </style>
 </head>
@@ -182,6 +198,9 @@ button:hover {
 
 <div id="letter"></div>
 <div id="choice-area"></div>
+
+<!-- 底部示範圖片 -->
+<img id="bottom-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Red-panda-standing.png/200px-Red-panda-standing.png" alt="底部裝飾">
 
 <script>
 const PASSWORD = "1031";
@@ -246,12 +265,10 @@ document.getElementById("unlock").onclick = () => {
         i++;
         setTimeout(showLine, 1500);
       } else {
-        // 信件顯示完後，出現2選1互動
         showChoices();
       }
     }
     showLine();
-
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
