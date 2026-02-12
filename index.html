@@ -5,7 +5,7 @@
 <title>JANE DOE</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -13,7 +13,7 @@ body {
   padding: 40px;
   padding-top: 12vh;
   color: #ffffff;
-  font-family: 'Sacramento', 'Caveat‘, cursive;
+  font-family: 'Sacramento', 'Satisfy', cursive;
   line-height: 2;
   font-size: 20px;
 
@@ -163,13 +163,17 @@ button:hover {
 
 /* 手機提示文字 */
 #mobile-tip {
-  margin-top: 15px;
+  position: fixed;      
+  bottom: 120px;        /* 距離底部圖片上方 */
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1em;
   color: #f2e6d9;
   text-align: center;
   z-index: 2;
   pointer-events: none;
-  display: none; /* 一開始隱藏 */
+  opacity: 0;           /* 一開始透明 */
+  transition: opacity 1.5s ease;  /* 淡入動畫 */
 }
 
 /* 手機版微調 */
@@ -278,7 +282,7 @@ document.getElementById("unlock").onclick = () => {
         letterEl.appendChild(line);
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
-        setTimeout(showLine, 1000);
+        setTimeout(showLine, 1000); // 調整每行顯示速度
       } else {
         showChoices();
       }
@@ -307,9 +311,10 @@ function showChoices(){
   choiceArea.appendChild(option1);
   choiceArea.appendChild(option2);
 
-  
-  // 顯示手機提示文字
-  document.getElementById("mobile-tip").style.display = "block";
+  // 顯示手機提示文字並淡入
+  const mobileTip = document.getElementById("mobile-tip");
+  mobileTip.style.display = "block";
+  setTimeout(()=>{ mobileTip.style.opacity = 1; }, 100);
 }
 </script>
 
