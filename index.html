@@ -16,13 +16,16 @@ body {
   font-family: 'Sacramento', 'Satisfy', cursive;
   line-height: 2;
   font-size: 20px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
-  overflow-x: hidden;
+
+  overflow: hidden;
   position: relative;
+
   background: linear-gradient(-45deg, #0e1a2b, #132743, #1c2e4a, #0e1a2b);
   background-size: 400% 400%;
   animation: gradientMove 18s ease infinite;
@@ -56,34 +59,10 @@ h1 {
   text-align: center;
 }
 
-#letter p {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-
-#letter p.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 #letter a {
   pointer-events: auto; 
   color: #f2e6d9;
   text-decoration: underline;
-}
-
-/* 手機提示文字 */
-#mobile-tip {
-  margin-top: 15px;
-  font-size: 1em;
-  color: #f2e6d9;
-  text-align: center;
-  z-index: 2;
-  pointer-events: none;
-  display: none;
-  opacity: 0;
-  transition: opacity 2s ease;
 }
 
 /* 輸入區 */
@@ -182,6 +161,17 @@ button:hover {
   pointer-events: none;
 }
 
+/* 手機提示文字 */
+#mobile-tip {
+  margin-top: 15px;
+  font-size: 1em;
+  color: #f2e6d9;
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+  display: none; /* 一開始隱藏 */
+}
+
 /* 手機版微調 */
 @media (max-width: 768px) {
   body {
@@ -219,9 +209,12 @@ button:hover {
 </div>
 
 <div id="letter"></div>
-<div id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</div>
 <div id="choice-area"></div>
 
+<!-- 手機提示文字 -->
+<p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
+
+<!-- 底部示範圖片 -->
 <img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png" alt="底部裝飾">
 
 <script>
@@ -275,32 +268,22 @@ document.getElementById("unlock").onclick = () => {
 
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
-
-    // 建立 <p> 每行文字
-    loveLetter.forEach(text => {
-      const line = document.createElement("p");
-      line.innerHTML = text;
-      letterEl.appendChild(line);
-    });
-
-    // 監控文字淡入
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll("#letter p").forEach(p => observer.observe(p));
-
-    // 顯示手機提示文字
-    const mobileTip = document.getElementById("mobile-tip");
-    mobileTip.style.display = "block";
-    setTimeout(()=>{ mobileTip.style.opacity = 1; }, 50);
-
-    // 顯示選項按鈕
-    showChoices();
+    let i = 0;
+    function showLine(){
+      if(i < loveLetter.length){
+        const line = document.createElement("p");
+        line.innerHTML = loveLetter[i];
+        line.style.opacity = 0;
+        line.style.transition = "opacity 2s ease";
+        letterEl.appendChild(line);
+        setTimeout(()=>{ line.style.opacity = 1; }, 50);
+        i++;
+        setTimeout(showLine, 1500);
+      } else {
+        showChoices();
+      }
+    }
+    showLine();
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
@@ -323,6 +306,20 @@ function showChoices(){
 
   choiceArea.appendChild(option1);
   choiceArea.appendChild(option2);
+
+
+
+
+
+
+
+
+
+  
+
+  
+  // 顯示手機提示文字
+  document.getElementById("mobile-tip").style.display = "block";
 }
 </script>
 
