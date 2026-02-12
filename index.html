@@ -11,9 +11,9 @@ body {
   margin: 0;
   padding: 40px;
   padding-top: 12vh;
-  padding-bottom: 220px; /* 保留底部空間給固定圖片 */
+  padding-bottom: 220px; /* 預留底部空間給固定圖片 */
   color: #ffffff;
-  font-family: 'Sacramento', 'Helvetica Neue', sans-serif;
+  font-family: 'Sacramento', 'Arial', 'Helvetica', sans-serif; /* 中文用Sacramento，英文用Arial/Helvetica */
   line-height: 2;
   font-size: 20px;
 
@@ -80,6 +80,7 @@ input {
   background: rgba(255,255,255,0.15);
   color: white;
   outline: none;
+  font-family: inherit; /* 繼承body字型 */
 }
 
 button {
@@ -146,7 +147,7 @@ button:hover {
   text-align: center;
   z-index: 2;
   pointer-events: none;
-  display: none;
+  display: none; /* 初始隱藏 */
 }
 
 @media (max-width: 768px) {
@@ -235,10 +236,11 @@ function unlockPage(){
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
 
-    // ⭐ 一開始就滾動到 letter 的最上方
+    // 一開始就滾動到letter最上方
     letterEl.scrollIntoView({behavior: "smooth", block: "start"});
 
     let i = 0;
+
     function showLine(){
       if(i < loveLetter.length){
         const line = document.createElement("p");
@@ -247,11 +249,8 @@ function unlockPage(){
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
 
-        // 文字出現時自動滾動到最後一行（保留底部空間）
-        window.scrollTo({
-          top: document.body.scrollHeight - 220,
-          behavior: "smooth"
-        });
+        // 滑動到新加入的文字，保留底部空間
+        line.scrollIntoView({behavior:"smooth", block:"end"});
 
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
@@ -265,6 +264,7 @@ function unlockPage(){
         });
       }
     }
+
     showLine();
   } else {
     alert("密碼錯誤，再試一次 💌");
