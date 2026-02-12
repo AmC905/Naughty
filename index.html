@@ -38,7 +38,7 @@ body {
 
 /* 標題 */
 h1 {
-  font-size: 3em; /* 標題大一些 */
+  font-size: 3em;
   font-weight: 300;
   letter-spacing: 4px;
   margin-bottom: 20px;
@@ -46,14 +46,14 @@ h1 {
 
 /* 指示文字 */
 #instruction {
-  font-size: 1.5em; /* 提升大小 */
+  font-size: 1.5em;
   margin-bottom: 30px;
 }
 
 /* 信件文字 */
 #letter {
   margin-top: 40px;
-  font-size: 1.4em; /* 調大一點 */
+  font-size: 1.4em;
   max-width: 700px;
   text-align: center;
 }
@@ -128,6 +128,26 @@ button:hover {
   100% { opacity: 0; transform: translate(300px,300px) rotate(45deg); }
 }
 
+/* 選項按鈕區 */
+#choice-area {
+  margin-top: 30px;
+}
+
+.choice-button {
+  padding: 12px 20px;
+  font-size: 1.2em;
+  margin: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #f2e6d9;
+  color: #333;
+}
+
+.choice-button:hover {
+  background: #e8d9c3;
+}
+
 /* 手機版微調 */
 @media (max-width: 768px) {
   body {
@@ -161,6 +181,7 @@ button:hover {
 </div>
 
 <div id="letter"></div>
+<div id="choice-area"></div>
 
 <script>
 const PASSWORD = "1031";
@@ -183,64 +204,77 @@ function createStars(num){
   for(let i=0;i<num;i++){
     const star = document.createElement("div");
     star.classList.add("star");
-
     const size = Math.random()*3 + 1;
     star.style.width = size+"px";
     star.style.height = size+"px";
     star.style.left = Math.random()*100+"vw";
     star.style.top = Math.random()*100+"vh";
     star.style.animationDuration = (Math.random()*40+20)+"s";
-
     document.body.appendChild(star);
   }
 }
 createStars(80);
 
-// 🌠 流星（只跑一次）
+// 🌠 流星
 function shootMeteor(){
   const meteor = document.createElement("div");
   meteor.classList.add("meteor");
   meteor.style.top = "10%";
   meteor.style.left = "70%";
   document.body.appendChild(meteor);
-
   setTimeout(()=>{ meteor.remove(); }, 1000);
 }
 
 // 🔓 解鎖
 document.getElementById("unlock").onclick = () => {
   const input = document.getElementById("pw").value;
-
   if(input === PASSWORD){
     document.getElementById("input-area").style.display = "none";
-
-    shootMeteor(); // 解鎖後出現流星
+    shootMeteor();
 
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
-
     let i = 0;
     function showLine(){
       if(i < loveLetter.length){
-        const line = document.createElement("p"); // 使用 <p>
+        const line = document.createElement("p");
         line.innerHTML = loveLetter[i];
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
-
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
-
         i++;
         setTimeout(showLine, 1500);
+      } else {
+        // 信件顯示完後，出現2選1互動
+        showChoices();
       }
     }
-
     showLine();
 
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
 };
+
+// 顯示2選1按鈕
+function showChoices(){
+  const choiceArea = document.getElementById("choice-area");
+  choiceArea.innerHTML = "";
+
+  const option1 = document.createElement("button");
+  option1.className = "choice-button";
+  option1.textContent = "想念我嗎？";
+  option1.onclick = ()=>{ alert("偷偷告訴你，我也一直想念你 💌"); };
+
+  const option2 = document.createElement("button");
+  option2.className = "choice-button";
+  option2.textContent = "要喝咖啡嗎？";
+  option2.onclick = ()=>{ alert("好的，一起喝咖啡 ☕"); };
+
+  choiceArea.appendChild(option1);
+  choiceArea.appendChild(option2);
+}
 </script>
 
 </body>
