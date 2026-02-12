@@ -299,24 +299,6 @@ document.getElementById("unlock").onclick = () => {
     alert("密碼錯誤，再試一次 💌");
   }
 };
-
-// 顯示2選1按鈕
-function showChoices(){
-  const choiceArea = document.getElementById("choice-area");
-  choiceArea.innerHTML = "";
-
-  const option1 = document.createElement("button");
-  option1.className = "choice-button";
-  option1.textContent = "想念我嗎？";
-  option1.onclick = ()=>{ alert("偷偷告訴你，我也一直想念你 💌"); };
-
-  const option2 = document.createElement("button");
-  option2.className = "choice-button";
-  option2.textContent = "要喝咖啡嗎？";
-  option2.onclick = ()=>{ alert("好的，一起喝咖啡 ☕"); };
-
-  choiceArea.appendChild(option1);
-  choiceArea.appendChild(option2);
   
   // 顯示手機提示文字
   document.getElementById("mobile-tip").style.display = "block";
