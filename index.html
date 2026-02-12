@@ -163,17 +163,13 @@ button:hover {
 
 /* 手機提示文字 */
 #mobile-tip {
-  position: fixed;      
-  bottom: 120px;        /* 距離底部圖片上方 */
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 15px;
   font-size: 1em;
   color: #f2e6d9;
   text-align: center;
   z-index: 2;
   pointer-events: none;
-  opacity: 0;           /* 一開始透明 */
-  transition: opacity 1.5s ease;  /* 淡入動畫 */
+  display: none; /* 一開始隱藏 */
 }
 
 /* 手機版微調 */
@@ -214,7 +210,7 @@ button:hover {
 
 <div id="letter"></div>
 <div id="choice-area"></div>
-  
+
 <!-- 手機提示文字 -->
 <p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 
@@ -282,7 +278,7 @@ document.getElementById("unlock").onclick = () => {
         letterEl.appendChild(line);
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
-        setTimeout(showLine, 1000); // 調整每行顯示速度
+        setTimeout(showLine, 1200);
       } else {
         showChoices();
       }
@@ -310,11 +306,9 @@ function showChoices(){
 
   choiceArea.appendChild(option1);
   choiceArea.appendChild(option2);
-
-  // 顯示手機提示文字並淡入
-  const mobileTip = document.getElementById("mobile-tip");
-  mobileTip.style.display = "block";
-  setTimeout(()=>{ mobileTip.style.opacity = 1; }, 100);
+  
+  // 顯示手機提示文字
+  document.getElementById("mobile-tip").style.display = "block";
 }
 </script>
 
