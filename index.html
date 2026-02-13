@@ -5,6 +5,7 @@
 <title>JANE DOE</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
@@ -75,14 +76,30 @@ button:hover { background: #e8d9c3; }
 </div>
 
 <div id="letter"></div>
-<p id="mobile-tip">往上滑會更清楚的看到你的Power寶貝</p>
+<p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 <img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png">
 
-<!-- CryptoJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
 <script>
-const encryptedLoveLetter = "U2FsdGVkX1/5fTQ8TY5G81T4gZpHzyfx4nrET2tGzLg2crMPnYIhVZcA2zScpl+2t0OJr0g9qzMGpC0Qi5Fsv3g==";
+// ✅ 這裡存放的是密碼的 SHA-256 hash，而不是原始密碼
+const PASSWORD_HASH = "3e34b5dc434bcf3186f089d362691cfac1b17231601f2f402dc79015be878d83";
+
+const loveLetter = [
+  "密碼很簡單吧!",
+  "就像這件事情也很單純",
+  "就只是用我們聽得懂的靈魂語言溝通而已",
+  "我打造的專屬獨立空間，想讓你進來",
+  "你喜歡嗎?",
+  "反正我很喜歡就是了",
+  "這只是其中一件喜歡的人事物",
+  "想知道其它的話，我可以慢慢告訴你",
+  "例如",
+  "你想知道我怎麼在茫茫人海中找到你的嗎?",
+  "嘿嘿 今天先這樣 下次告訴你",
+  "好想聽你唱歌",
+  "從第一天開始我就這麼說了 我的低語呢喃",
+  "好吧 在那一天到來之前",
+  "<a href='https://open.spotify.com/playlist/5sTSL29EOv11UCg3s8goXg?si=OKr89teeRI-2ObO1radIxw' target='_blank'>我先聽這個歌單</a>。"
+];
 
 // ⭐ 星星生成
 function createStars(num){
@@ -110,53 +127,55 @@ function shootMeteor(){
   setTimeout(()=>{ meteor.remove(); }, 1000);
 }
 
+// 🔐 SHA-256 hash 函式
+async function sha256(message){
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
+  return hashHex;
+}
+
 // 🔓 解鎖
 async function unlockPage(){
   const input = document.getElementById("pw").value;
+  const inputHash = await sha256(input);
 
-  try {
-    const bytes = CryptoJS.AES.decrypt(encryptedLoveLetter, input);
-    const decryptedStr = bytes.toString(CryptoJS.enc.Utf8);
-
-    if(!decryptedStr){
-      alert("密碼錯誤，再試一次 💌");
-      return;
-    }
-
-    const letters = JSON.parse(decryptedStr);
+  if(inputHash === PASSWORD_HASH){
     document.getElementById("input-area").style.display = "none";
+    shootMeteor();
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
-
     let i = 0;
+
     function showLine(){
-      if(i < letters.length){
+      if(i < loveLetter.length){
         const line = document.createElement("p");
-        line.innerHTML = letters[i];
+        line.innerHTML = loveLetter[i];
         line.style.opacity = 0;
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
 
+        window.scrollTo({ top: document.body.scrollHeight - 220, behavior: "smooth" });
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
         setTimeout(showLine, 1200);
-
-        window.scrollTo({ top: document.body.scrollHeight - 220, behavior: "smooth" });
       } else {
         document.getElementById("mobile-tip").style.display = "block";
+        window.scrollTo({ top: document.body.scrollHeight - 220, behavior: "smooth" });
       }
     }
-
+    // ⭐ 解鎖後直接滾到最上面
     window.scrollTo({ top: 0, behavior: "smooth" });
     showLine();
-
-  } catch(e){
+  } else {
     alert("密碼錯誤，再試一次 💌");
   }
 }
 
 // 按鈕解鎖
 document.getElementById("unlock").onclick = unlockPage;
+// Enter 解鎖
 document.getElementById("pw").addEventListener("keypress", e=>{
   if(e.key === "Enter") unlockPage();
 });
