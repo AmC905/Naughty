@@ -82,7 +82,8 @@ button:hover { background: #e8d9c3; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <script>
-const encryptedLetter = "U2FsdGVkX1+3cE+5vM0o8ib0mhnJ9a3kRQa8Hh0i9eS3DYrFcsLxV57my+yHk+9sIEOMpxxN2qD+MDFd4uAj8pQ==";
+// 
+const encryptedLetter = "U2FsdGVkX19eJJuZh4CD7fXy9uO6bWy6Z+Hjki5E+FZLB2uOYkssWm+QHKpY6UehfCL2wJkH1b+lqzpuadLuklA==";
 
 // ⭐ 星星生成
 function createStars(num){
@@ -152,7 +153,6 @@ function unlockPage(){
 
 // 按鈕解鎖
 document.getElementById("unlock").onclick = unlockPage;
-// Enter 解鎖
 document.getElementById("pw").addEventListener("keypress", e=>{
   if(e.key === "Enter") unlockPage();
 });
