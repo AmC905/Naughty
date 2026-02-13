@@ -11,22 +11,19 @@ body {
   margin: 0;
   padding: 40px;
   padding-top: 12vh;
-  padding-bottom: 220px; /* 預留底部空間給固定圖片 */
+  padding-bottom: 220px; /* 預留底部空間 */
   color: #ffffff;
-  font-family: 'Sacramento', 'Arial', 'Helvetica', sans-serif; /* 中文用Sacramento，英文用Arial/Helvetica */
+  font-family: 'Sacramento', 'Helvetica Neue', sans-serif;
   line-height: 2;
   font-size: 20px;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   min-height: 100vh;
-
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
-
   background: linear-gradient(-45deg, #0e1a2b, #132743, #1c2e4a, #0e1a2b);
   background-size: 400% 400%;
   animation: gradientMove 18s ease infinite;
@@ -38,117 +35,25 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-h1 {
-  font-size: 3em;
-  font-weight: 300;
-  letter-spacing: 4px;
-  margin-bottom: 20px;
-}
+h1 { font-size: 3em; font-weight: 300; letter-spacing: 4px; margin-bottom: 20px; }
+#instruction { font-size: 1.5em; margin-bottom: 30px; }
+#letter { margin-top: 40px; font-size: 1.4em; max-width: 700px; text-align: center; }
+#letter a { pointer-events: auto; color: #f2e6d9; text-decoration: underline; }
+#input-area { margin-bottom: 40px; z-index: 2; }
+input, button { padding: 12px 18px; font-size: 1em; border-radius: 6px; border: none; margin: 8px; }
+input { background: rgba(255,255,255,0.15); color: white; outline: none; }
+button { background: #f2e6d9; color: #333; cursor: pointer; }
+button:hover { background: #e8d9c3; }
 
-#instruction {
-  font-size: 1.5em;
-  margin-bottom: 30px;
-}
+.star { position: absolute; border-radius: 50%; background: white; pointer-events: none; animation: floatStar linear infinite, twinkle 2s ease-in-out infinite alternate; }
+@keyframes floatStar { 0% { transform: translateY(0); } 100% { transform: translateY(-120vh); } }
+@keyframes twinkle { from { opacity: 0.2; } to { opacity: 1; } }
 
-#letter {
-  margin-top: 40px;
-  font-size: 1.4em;
-  max-width: 700px;
-  text-align: center;
-}
+.meteor { position: absolute; width: 2px; height: 120px; background: linear-gradient(white, rgba(255,255,255,0)); transform: rotate(45deg); animation: shoot 1s ease-out forwards; }
+@keyframes shoot { 0% { opacity: 1; transform: translate(0,0) rotate(45deg); } 100% { opacity: 0; transform: translate(300px,300px) rotate(45deg); } }
 
-#letter a {
-  pointer-events: auto;
-  color: #f2e6d9;
-  text-decoration: underline;
-}
-
-#input-area {
-  margin-bottom: 40px;
-  z-index: 2;
-}
-
-input, button {
-  padding: 12px 18px;
-  font-size: 1em;
-  border-radius: 6px;
-  border: none;
-  margin: 8px;
-}
-
-input {
-  background: rgba(255,255,255,0.15);
-  color: white;
-  outline: none;
-  font-family: inherit; /* 繼承body字型 */
-}
-
-button {
-  background: #f2e6d9;
-  color: #333;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #e8d9c3;
-}
-
-/* 星星 */
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: white;
-  pointer-events: none;
-  animation: floatStar linear infinite, twinkle 2s ease-in-out infinite alternate;
-}
-
-@keyframes floatStar {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-120vh); }
-}
-
-@keyframes twinkle {
-  from { opacity: 0.2; }
-  to { opacity: 1; }
-}
-
-/* 流星 */
-.meteor {
-  position: absolute;
-  width: 2px;
-  height: 120px;
-  background: linear-gradient(white, rgba(255,255,255,0));
-  transform: rotate(45deg);
-  animation: shoot 1s ease-out forwards;
-}
-
-@keyframes shoot {
-  0% { opacity: 1; transform: translate(0,0) rotate(45deg); }
-  100% { opacity: 0; transform: translate(300px,300px) rotate(45deg); }
-}
-
-/* 底部圖片 */
-#bottom-image {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 200px;
-  opacity: 0.8;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* 手機提示文字 */
-#mobile-tip {
-  margin-top: 15px;
-  font-size: 1em;
-  color: #f2e6d9;
-  text-align: center;
-  z-index: 2;
-  pointer-events: none;
-  display: none; /* 初始隱藏 */
-}
+#bottom-image { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); max-width: 200px; opacity: 0.8; z-index: 1; pointer-events: none; }
+#mobile-tip { margin-top: 15px; font-size: 1em; color: #f2e6d9; text-align: center; z-index: 2; pointer-events: none; display: none; }
 
 @media (max-width: 768px) {
   body { padding-top: 18vh; font-size: 18px; }
@@ -171,16 +76,13 @@ button:hover {
 </div>
 
 <div id="letter"></div>
-
-<p id="mobile-tip">往上滑看清楚你的Power寶貝</p>
-
+<p id="mobile-tip">手機版往上滑會更清楚的看到你的Power寶貝</p>
 <img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png">
 
 <script>
-// 密碼
-const PASSWORD = "1031";
+// ✅ 這裡存放的是密碼的 SHA-256 hash，而不是原始密碼
+const PASSWORD_HASH = "6a0c0e19d6a4f4e5b6d05a38db6b2c7c7b5a6f6d3e1c5d2b4f7e0d1a3c2b4e5f"; // 這裡示範假 hash
 
-// 文字內容
 const loveLetter = [
   "密碼很簡單吧!",
   "就像這件事情也很單純",
@@ -225,20 +127,25 @@ function shootMeteor(){
   setTimeout(()=>{ meteor.remove(); }, 1000);
 }
 
-// 🔓 解鎖函式
-function unlockPage(){
-  const input = document.getElementById("pw").value;
+// 🔐 SHA-256 hash 函式
+async function sha256(message){
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
+  return hashHex;
+}
 
-  if(input === PASSWORD){
+// 🔓 解鎖
+async function unlockPage(){
+  const input = document.getElementById("pw").value;
+  const inputHash = await sha256(input);
+
+  if(inputHash === PASSWORD_HASH){
     document.getElementById("input-area").style.display = "none";
     shootMeteor();
-
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
-
-    // 一開始就滾動到letter最上方
-    letterEl.scrollIntoView({behavior: "smooth", block: "start"});
-
     let i = 0;
 
     function showLine(){
@@ -249,36 +156,28 @@ function unlockPage(){
         line.style.transition = "opacity 2s ease";
         letterEl.appendChild(line);
 
-        // 滑動到新加入的文字，保留底部空間
-        line.scrollIntoView({behavior:"smooth", block:"end"});
-
+        window.scrollTo({ top: document.body.scrollHeight - 220, behavior: "smooth" });
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
         setTimeout(showLine, 1200);
       } else {
-        // 顯示手機提示文字
         document.getElementById("mobile-tip").style.display = "block";
-        window.scrollTo({
-          top: document.body.scrollHeight - 220,
-          behavior: "smooth"
-        });
+        window.scrollTo({ top: document.body.scrollHeight - 220, behavior: "smooth" });
       }
     }
-
+    // ⭐ 解鎖後直接滾到最上面
+    window.scrollTo({ top: 0, behavior: "smooth" });
     showLine();
   } else {
     alert("密碼錯誤，再試一次 💌");
   }
 }
 
-// 按鈕點擊解鎖
+// 按鈕解鎖
 document.getElementById("unlock").onclick = unlockPage;
-
-// Enter 鍵解鎖
-document.getElementById("pw").addEventListener("keypress", function(e){
-  if(e.key === "Enter"){
-    unlockPage();
-  }
+// Enter 解鎖
+document.getElementById("pw").addEventListener("keypress", e=>{
+  if(e.key === "Enter") unlockPage();
 });
 </script>
 
