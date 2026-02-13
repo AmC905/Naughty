@@ -5,13 +5,12 @@
 <title>JANE DOE</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
-
 <style>
 body {
   margin: 0;
   padding: 40px;
   padding-top: 12vh;
-  padding-bottom: 220px;
+  padding-bottom: 220px; /* 預留底部空間 */
   color: #ffffff;
   font-family: 'Sacramento', 'Helvetica Neue', sans-serif;
   line-height: 2;
@@ -83,7 +82,8 @@ button:hover { background: #e8d9c3; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <script>
-const PASSWORD_HASH = "3e34b5dc434bcf3186f089d362691cfac1b17231601f2f402dc79015be878d83";
+// 🔐 加密後的 loveLetter，密碼為 1031
+const encryptedLoveLetter = "U2FsdGVkX19ieW2gX3l6t6o9DUpKfM6cCVZyLnl2wFjISY1a+58LF0kRFuyxg3L+VdD+ljVdc/KvMEhz58fM0jA==";
 
 // ⭐ 星星生成
 function createStars(num){
@@ -111,7 +111,7 @@ function shootMeteor(){
   setTimeout(()=>{ meteor.remove(); }, 1000);
 }
 
-// 🔓 解鎖函式
+// 🔓 解鎖
 async function unlockPage(){
   const input = document.getElementById("pw").value;
 
@@ -125,7 +125,6 @@ async function unlockPage(){
     }
 
     const letters = JSON.parse(decryptedStr);
-
     document.getElementById("input-area").style.display = "none";
     const letterEl = document.getElementById("letter");
     letterEl.innerHTML = "";
@@ -142,6 +141,7 @@ async function unlockPage(){
         setTimeout(()=>{ line.style.opacity = 1; }, 50);
         i++;
         setTimeout(showLine, 1200);
+
         window.scrollTo({ top: document.body.scrollHeight - 220, behavior: "smooth" });
       } else {
         document.getElementById("mobile-tip").style.display = "block";
