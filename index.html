@@ -71,7 +71,7 @@ button:hover { background: #e8d9c3; }
 <p id="instruction">輸入靈魂密碼打開信封：</p>
 
 <div id="input-area">
-  <input type="password" id="pw" placeholder="1031">
+  <input type="password" id="pw" placeholder="YouKnow">
   <button id="unlock">只給你看</button>
 </div>
 
@@ -82,8 +82,8 @@ button:hover { background: #e8d9c3; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <script>
-// 🔐 已經用密碼 "1031" 正確加密的愛心信
-const encryptedLetter = "U2FsdGVkX19wFgMksTr9IuI0RZC9pFy3ol1Uo9JbMxyG70uYuN94cBz3U0OvMAtFsQgr+zUkXlPFuVhDC9DJQ==";
+// 🔐 已經用密碼
+const encryptedLetter = "U2FsdGVkX1+3OanEWpKxFqCxttcxraKYoJOFVBTJBxkxhuwbeRGk7R4PZQluZzT7Sf2Jzn2kBrPr5gMMGl5Ab/st7yaQXzHyYGhGjTlPkYlQnNFDlI0Bla37x8k1OOrcOfSpffJ2V8PkoRj3R2IWzaP4efmaoJVvQ4gWj6lAs0iHNDvOG50N+pSPrisGYj/OoL1DtDQDtVuyMl7LKs3oLXRlFs7pi+ZPwBr5QDuwVt1poBEbmxokh2KfUhFPEkUNZQauaZbuM++QApiltz33Mar1zP68fEQWwWYnFm0GYc0yn7jnfU2aPf89pS9Lb3YZk4T2lff8CDNkChgkNiXZej1MT+i4eWyZPe0pf826S0GA3HnPT1qbgDJiijIySxbCfWaDR7DY2RyNp+nJhjbetJQ5mYPxhi/DNdjJVBz3Q9ZRNXIQjEnqJTrk/KMokY8QlgYHNopsLM4NqCgE/wxUmEV1WE8NHZN28VqRbaQdIujI+Jso/gtKWxzQ8pB6Uu9YXY0H2X/L2fllnTYd5w4nd1jkL7w0ajD9IYVwIkPWixIhEWfl0/KQNxMjzT2gKq7L+Htmtozai6wOOG2emw4ag+697Eg2flzACj32+QugPLKUoZ4gDbd5rSG55Jyr9FpCOc/Y5t5aDnP3QmRJ852gxGfUbW7VlJRMEfgzKo7AKgAUqOMW/Ny/Z/XN5I9iS2nHntCRLX98O1X+fJEfadEH9cO9qrJXIiHprEDpH1yeCsH1v5Wr9pi0YvwkjbPBjgcLnj27Xo+IJd+ZNDCH5HZxkjmBnYjMS1DLI4xjLipNp4DIso3YcwYIFVHo4c/m9hEIiGOsSiXZ5V+t5iNvv1NadOXdeTmJLU3IUGlGYsPTKe2xIbVmFsgXszx5JjhJcByGL5aBaTM+NWd1n/BFXOAedg==";
 
 // ⭐ 星星生成
 function createStars(num){
