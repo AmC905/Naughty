@@ -5,13 +5,12 @@
 <title>JANE DOE</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
-
 <style>
 body {
   margin: 0;
   padding: 40px;
   padding-top: 12vh;
-  padding-bottom: 220px;
+  padding-bottom: 220px; /* 預留底部空間 */
   color: #ffffff;
   font-family: 'Sacramento', 'Helvetica Neue', sans-serif;
   line-height: 2;
@@ -83,7 +82,8 @@ button:hover { background: #e8d9c3; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <script>
-const encryptedLoveLetter = "U2FsdGVkX19ieW2gX3l6t6o9DUpKfM6cCVZyLnl2wFjISY1a+58LF0kRFuyxg3L+VdD+ljVdc/KvMEhz58fM0jA==";
+// ⭐ 這個 loveLetter 已經用 "1031" 加密
+const encryptedLoveLetter = "U2FsdGVkX1/5fTQ8TY5G81T4gZpHzyfx4nrET2tGzLg2crMPnYIhVZcA2zScpl+2t0OJr0g9qzMGpC0Qi5Fsv3g==";
 
 // ⭐ 星星生成
 function createStars(num){
