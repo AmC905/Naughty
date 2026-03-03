@@ -1,76 +1,148 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<title>Private</title>
 
-<title>For You</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <style>
 
-body {
-  margin:0;
-  height:100vh;
-  background:black;
-  overflow:hidden;
-  font-family: -apple-system,BlinkMacSystemFont;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  transition:all 2s ease;
+html,body{
+margin:0;
+padding:0;
+height:100%;
+font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+background:#000;
+color:#fff;
+overflow-x:hidden;
 }
 
-body.unlocked {
-  background:
-  radial-gradient(circle at center,
-  rgba(255,255,255,0.15) 0%,
-  rgba(0,0,0,1) 70%);
-  animation: zoombg 6s ease forwards;
+/* ===== 背景光暈 ===== */
+
+body::before{
+content:'';
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 30% 30%,rgba(255,255,255,0.08),transparent 50%),
+radial-gradient(circle at 70% 70%,rgba(255,255,255,0.05),transparent 60%);
+z-index:0;
 }
 
-@keyframes zoombg {
-  from {background-size:100%;}
-  to {background-size:140%;}
+body::after{
+content:'';
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at center,rgba(255,255,255,0.08),transparent 70%);
+opacity:0;
+transition:2s ease;
+z-index:0;
 }
 
-.card {
-  background:#111;
-  padding:40px;
-  border-radius:20px;
-  text-align:center;
-  transition:opacity 1.5s ease;
+body.unlocked::after{
+opacity:1;
 }
 
-.fadeout {
-  opacity:0;
+/* ===== 背景 zoom ===== */
+
+body.zoomed{
+animation:zoomBg 6s ease forwards;
 }
 
-#story {
-  position:absolute;
-  top:20%;
-  width:60%;
-  max-height:60vh;
-  overflow-y:auto;
-  text-align:left;
-  opacity:0;
+@keyframes zoomBg{
+0%{transform:scale(1);}
+100%{transform:scale(1.06);}
 }
 
-.line {
-  font-size:28px;
-  margin:30px 0;
-  opacity:0;
-  transform:translateY(40px);
-  animation: editorial 1.8s ease forwards;
+/* ===== 解鎖卡片 ===== */
+
+#input-area{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+padding:60px 50px;
+border-radius:28px;
+text-align:center;
+z-index:2;
+transition:1.2s cubic-bezier(.19,1,.22,1);
+box-shadow:0 30px 60px rgba(0,0,0,0.6);
 }
 
-@keyframes editorial {
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
+#input-area h1{
+font-weight:500;
+letter-spacing:3px;
+margin-bottom:30px;
+font-size:22px;
+opacity:.8;
+}
+
+input{
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.2);
+padding:14px 20px;
+border-radius:14px;
+color:#fff;
+font-size:16px;
+outline:none;
+width:220px;
+transition:.4s;
+}
+
+input:focus{
+border:1px solid #fff;
+background:rgba(255,255,255,0.15);
+}
+
+button{
+margin-top:25px;
+padding:12px 26px;
+border:none;
+border-radius:20px;
+background:#fff;
+color:#000;
+font-weight:500;
+cursor:pointer;
+transition:.4s;
+}
+
+button:hover{
+opacity:.8;
+}
+
+/* ===== 文字區 ===== */
+
+#letter{
+max-width:680px;
+margin:0 auto;
+padding:120px 30px 200px 30px;
+position:relative;
+z-index:1;
+}
+
+#letter p{
+opacity:0;
+transform:translateY(30px) scale(.98);
+filter:blur(6px);
+transition:1.2s cubic-bezier(.19,1,.22,1);
+font-size:20px;
+line-height:1.8;
+margin:40px 0;
+}
+
+#letter p.show{
+opacity:1;
+transform:translateY(0) scale(1);
+filter:blur(0);
 }
 
 </style>
@@ -78,77 +150,77 @@ body.unlocked {
 
 <body>
 
-<div class="card" id="card">
-<input type="password" id="pwd" placeholder="Password">
-<button onclick="unlock()">Unlock</button>
+<div id="input-area">
+<h1>PRIVATE ACCESS</h1>
+<input type="password" id="pw" placeholder="Enter Password">
+<br>
+<button onclick="unlockPage()">Unlock</button>
 </div>
 
-<div id="story"></div>
+<div id="letter"></div>
 
 <script>
 
-//🔐 密碼
-const PASSWORD = "1031"
+/* ⚠️ 把這串改成你的 encryptedLetter */
+const encryptedLetter = "U2FsdGVkX1+3OanEWpKxFqCxttcxraKYoJOFVBTJBxkxhuwbeRGk7R4PZQluZzT7Sf2Jzn2kBrPr5gMMGl5Ab/st7yaQXzHyYGhGjTlPkYlQnNFDlI0Bla37x8k1OOrcOfSpffJ2V8PkoRj3R2IWzaP4efmaoJVvQ4gWj6lAs0iHNDvOG50N+pSPrisGYj/OoL1DtDQDtVuyMl7LKs3oLXRlFs7pi+ZPwBr5QDuwVt1poBEbmxokh2KfUhFPEkUNZQauaZbuM++QApiltz33Mar1zP68fEQWwWYnFm0GYc0yn7jnfU2aPf89pS9Lb3YZk4T2lff8CDNkChgkNiXZej1MT+i4eWyZPe0pf826S0GA3HnPT1qbgDJiijIySxbCfWaDR7DY2RyNp+nJhjbetJQ5mYPxhi/DNdjJVBz3Q9ZRNXIQjEnqJTrk/KMokY8QlgYHNopsLM4NqCgE/wxUmEV1WE8NHZN28VqRbaQdIujI+Jso/gtKWxzQ8pB6Uu9YXY0H2X/L2fllnTYd5w4nd1jkL7w0ajD9IYVwIkPWixIhEWfl0/KQNxMjzT2gKq7L+Htmtozai6wOOG2emw4ag+697Eg2flzACj32+QugPLKUoZ4gDbd5rSG55Jyr9FpCOc/Y5t5aDnP3QmRJ852gxGfUbW7VlJRMEfgzKo7AKgAUqOMW/Ny/Z/XN5I9iS2nHntCRLX98O1X+fJEfadEH9cO9qrJXIiHprEDpH1yeCsH1v5Wr9pi0YvwkjbPBjgcLnj27Xo+IJd+ZNDCH5HZxkjmBnYjMS1DLI4xjLipNp4DIso3YcwYIFVHo4c/m9hEIiGOsSiXZ5V+t5iNvv1NadOXdeTmJLU3IUGlGYsPTKe2xIbVmFsgXszx5JjhJcByGL5aBaTM+NWd1n/BFXOAedg==";
 
-//🔐 加密內容（AES）
-const encrypted = [
-"U2FsdGVkX1+z5Z0w8h5hZ+9fH5sEN+ZfxU7R2nh...",
-"U2FsdGVkX19Jdfsdklfsdfjlskdfjls...",
-"U2FsdGVkX19asd9f8a9sdf89a7sdf...",
-"U2FsdGVkX1+asdf89asdf89asdf...",
-"U2FsdGVkX1+asd89f7as9df8a9sdf...",
-"U2FsdGVkX1+adsf89a7sd9f8as7df...",
-"U2FsdGVkX1+asdf9a87sdf9a87sdf...",
-"U2FsdGVkX19asdf8a7sd9f8a7sdf...",
-"U2FsdGVkX1+asdf9a87sd9f87asd...",
-"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
-"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
-"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
-"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
-"U2FsdGVkX1+asdf89a7sd9f8a7sd..."
-]
+function unlockPage(){
 
-function unlock(){
+const input = document.getElementById("pw").value.trim();
 
-let p = document.getElementById("pwd").value
+try{
 
-if(p !== PASSWORD){
-alert("Wrong Password")
-return
-}
+const bytes = CryptoJS.AES.decrypt(encryptedLetter,input);
+const decrypted = bytes.toString(CryptoJS.enc.Utf8);
 
-document.getElementById("card").classList.add("fadeout")
-document.body.classList.add("unlocked")
+if(!decrypted) throw "err";
 
-setTimeout(showStory,1500)
+const loveLetter = JSON.parse(decrypted);
 
-}
+const card = document.getElementById("input-area");
 
-function showStory(){
+card.style.opacity="0";
+card.style.transform="translate(-50%,-50%) scale(.9)";
 
-let story = document.getElementById("story")
-story.style.opacity = 1
-
-encrypted.forEach((e,i)=>{
-
-let txt = CryptoJS.AES.decrypt(e,PASSWORD)
-.toString(CryptoJS.enc.Utf8)
-
-let div = document.createElement("div")
-div.className="line"
-div.innerHTML = txt
+document.body.classList.add("unlocked");
+document.body.classList.add("zoomed");
 
 setTimeout(()=>{
-story.appendChild(div)
+card.style.display="none";
+},1200);
 
-story.scrollTo({
-top:story.scrollHeight,
-behavior:"smooth"
-})
+const letterEl=document.getElementById("letter");
+letterEl.innerHTML="";
 
-},i*2500)
+let i=0;
 
-})
+function showLine(){
+
+if(i<loveLetter.length){
+
+const line=document.createElement("p");
+line.innerHTML=loveLetter[i];
+letterEl.appendChild(line);
+
+setTimeout(()=>{
+line.classList.add("show");
+line.scrollIntoView({
+behavior:"smooth",
+block:"end"
+});
+},100);
+
+i++;
+setTimeout(showLine,1400);
+
+}
+}
+
+setTimeout(showLine,800);
+
+}catch(e){
+alert("Access Denied");
+}
 
 }
 
