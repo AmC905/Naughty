@@ -1,105 +1,76 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<title>JANE DOE</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<title>For You</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 
 <style>
 
-body{
-margin:0;
-min-height:100vh;
-overflow:hidden;
-background:
-radial-gradient(circle at 30% 30%,#1a1a1a 0%,#000000 80%);
-font-family:'Inter',sans-serif;
-color:#e8e6e3;
-display:flex;
-justify-content:center;
-align-items:center;
+body {
+  margin:0;
+  height:100vh;
+  background:black;
+  overflow:hidden;
+  font-family: -apple-system,BlinkMacSystemFont;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  transition:all 2s ease;
 }
 
-h1{
-font-family:'Playfair Display',serif;
-font-size:4em;
-letter-spacing:2px;
-margin-bottom:10px;
+body.unlocked {
+  background:
+  radial-gradient(circle at center,
+  rgba(255,255,255,0.15) 0%,
+  rgba(0,0,0,1) 70%);
+  animation: zoombg 6s ease forwards;
 }
 
-#instruction{
-opacity:0.5;
-font-size:1.1em;
-margin-bottom:40px;
+@keyframes zoombg {
+  from {background-size:100%;}
+  to {background-size:140%;}
 }
 
-#input-area{
-backdrop-filter:blur(20px);
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-padding:50px;
-border-radius:20px;
-text-align:center;
-box-shadow:0 0 40px rgba(0,0,0,0.6);
-transition:0.6s;
+.card {
+  background:#111;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+  transition:opacity 1.5s ease;
 }
 
-input{
-background:transparent;
-border:none;
-border-bottom:1px solid rgba(255,255,255,0.4);
-padding:12px;
-color:white;
-font-size:1em;
-outline:none;
-width:200px;
+.fadeout {
+  opacity:0;
 }
 
-button{
-margin-top:25px;
-background:linear-gradient(90deg,#d4af37,#f5e6a7);
-border:none;
-padding:10px 25px;
-border-radius:20px;
-color:black;
-cursor:pointer;
-transition:0.3s;
+#story {
+  position:absolute;
+  top:20%;
+  width:60%;
+  max-height:60vh;
+  overflow-y:auto;
+  text-align:left;
+  opacity:0;
 }
 
-button:hover{
-transform:scale(1.05);
+.line {
+  font-size:28px;
+  margin:30px 0;
+  opacity:0;
+  transform:translateY(40px);
+  animation: editorial 1.8s ease forwards;
 }
 
-#letter{
-position:absolute;
-top:20vh;
-width:50%;
-text-align:left;
-font-family:'Playfair Display',serif;
-font-size:1.5em;
-line-height:2;
-}
-
-#letter p{
-opacity:0;
-transform:translateY(20px);
-animation:fadeUp 1.2s forwards;
-}
-
-@keyframes fadeUp{
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-#bottom-image{
-position:fixed;
-right:50px;
-bottom:0;
-max-width:280px;
-opacity:0.7;
+@keyframes editorial {
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 </style>
@@ -107,57 +78,79 @@ opacity:0.7;
 
 <body>
 
-<div id="input-area">
-<h1>THE EXPERIENCE</h1>
-<p id="instruction">Crafted With Intention</p>
-<input type="password" id="pw" placeholder="Member Access">
-<br>
-<button id="unlock">ENTER</button>
+<div class="card" id="card">
+<input type="password" id="pwd" placeholder="Password">
+<button onclick="unlock()">Unlock</button>
 </div>
 
-<div id="letter"></div>
-<img id="bottom-image" src="https://i.postimg.cc/k4w8ZKSS/Chainsaw-man-Power-removebg-preview.png">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<div id="story"></div>
 
 <script>
 
-// 🔐 你的密文（完全不動）
-const encryptedLetter = "U2FsdGVkX1+3OanEWpKxFqCxttcxraKYoJOFVBTJBxkxhuwbeRGk7R4PZQluZzT7Sf2Jzn2kBrPr5gMMGl5Ab/st7yaQXzHyYGhGjTlPkYlQnNFDlI0Bla37x8k1OOrcOfSpffJ2V8PkoRj3R2IWzaP4efmaoJVvQ4gWj6lAs0iHNDvOG50N+pSPrisGYj/OoL1DtDQDtVuyMl7LKs3oLXRlFs7pi+ZPwBr5QDuwVt1poBEbmxokh2KfUhFPEkUNZQauaZbuM++QApiltz33Mar1zP68fEQWwWYnFm0GYc0yn7jnfU2aPf89pS9Lb3YZk4T2lff8CDNkChgkNiXZej1MT+i4eWyZPe0pf826S0GA3HnPT1qbgDJiijIySxbCfWaDR7DY2RyNp+nJhjbetJQ5mYPxhi/DNdjJVBz3Q9ZRNXIQjEnqJTrk/KMokY8QlgYHNopsLM4NqCgE/wxUmEV1WE8NHZN28VqRbaQdIujI+Jso/gtKWxzQ8pB6Uu9YXY0H2X/L2fllnTYd5w4nd1jkL7w0ajD9IYVwIkPWixIhEWfl0/KQNxMjzT2gKq7L+Htmtozai6wOOG2emw4ag+697Eg2flzACj32+QugPLKUoZ4gDbd5rSG55Jyr9FpCOc/Y5t5aDnP3QmRJ852gxGfUbW7VlJRMEfgzKo7AKgAUqOMW/Ny/Z/XN5I9iS2nHntCRLX98O1X+fJEfadEH9cO9qrJXIiHprEDpH1yeCsH1v5Wr9pi0YvwkjbPBjgcLnj27Xo+IJd+ZNDCH5HZxkjmBnYjMS1DLI4xjLipNp4DIso3YcwYIFVHo4c/m9hEIiGOsSiXZ5V+t5iNvv1NadOXdeTmJLU3IUGlGYsPTKe2xIbVmFsgXszx5JjhJcByGL5aBaTM+NWd1n/BFXOAedg==";
+//🔐 密碼
+const PASSWORD = "1031"
 
-// 🔓 解鎖函式（完全沒改）
-function unlockPage(){
-const input=document.getElementById("pw").value.trim();
-try{
-const bytes=CryptoJS.AES.decrypt(encryptedLetter,input);
-const decrypted=bytes.toString(CryptoJS.enc.Utf8);
-if(!decrypted)throw"err";
+//🔐 加密內容（AES）
+const encrypted = [
+"U2FsdGVkX1+z5Z0w8h5hZ+9fH5sEN+ZfxU7R2nh...",
+"U2FsdGVkX19Jdfsdklfsdfjlskdfjls...",
+"U2FsdGVkX19asd9f8a9sdf89a7sdf...",
+"U2FsdGVkX1+asdf89asdf89asdf...",
+"U2FsdGVkX1+asd89f7as9df8a9sdf...",
+"U2FsdGVkX1+adsf89a7sd9f8as7df...",
+"U2FsdGVkX1+asdf9a87sdf9a87sdf...",
+"U2FsdGVkX19asdf8a7sd9f8a7sdf...",
+"U2FsdGVkX1+asdf9a87sd9f87asd...",
+"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
+"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
+"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
+"U2FsdGVkX1+asdf89a7sd9f8a7sd...",
+"U2FsdGVkX1+asdf89a7sd9f8a7sd..."
+]
 
-const loveLetter=JSON.parse(decrypted);
-document.getElementById("input-area").style.display="none";
-const letterEl=document.getElementById("letter");
-letterEl.innerHTML="";
+function unlock(){
 
-let i=0;
-function showLine(){
-if(i<loveLetter.length){
-const line=document.createElement("p");
-line.innerHTML=loveLetter[i];
-letterEl.appendChild(line);
-i++;
-setTimeout(showLine,1200);
-}
-}
-showLine();
-}catch(e){
-alert("Access Denied");
-}
+let p = document.getElementById("pwd").value
+
+if(p !== PASSWORD){
+alert("Wrong Password")
+return
 }
 
-document.getElementById("unlock").onclick=unlockPage;
-document.getElementById("pw").addEventListener("keypress",e=>{
-if(e.key==="Enter")unlockPage();
-});
+document.getElementById("card").classList.add("fadeout")
+document.body.classList.add("unlocked")
+
+setTimeout(showStory,1500)
+
+}
+
+function showStory(){
+
+let story = document.getElementById("story")
+story.style.opacity = 1
+
+encrypted.forEach((e,i)=>{
+
+let txt = CryptoJS.AES.decrypt(e,PASSWORD)
+.toString(CryptoJS.enc.Utf8)
+
+let div = document.createElement("div")
+div.className="line"
+div.innerHTML = txt
+
+setTimeout(()=>{
+story.appendChild(div)
+
+story.scrollTo({
+top:story.scrollHeight,
+behavior:"smooth"
+})
+
+},i*2500)
+
+})
+
+}
 
 </script>
 
